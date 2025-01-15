@@ -4,11 +4,17 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "../context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+
+const ADMIN_EMAILS = ["admin@srm.edu.in", "nitheshnithesh56@gmail.com"];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
+  const { user, logout } = useAuth();
 
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
@@ -19,6 +25,24 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const handleDashboardClick = () => {
+    if (user && ADMIN_EMAILS.includes(user.email || "")) {
+      router.push("/admin/dashboard");
+    } else {
+      router.push("/dashboard");
+    }
+    setIsDropdownOpen(false);
+  };
 
   return (
     <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 w-11/12 max-w-5xl z-50">
@@ -50,13 +74,63 @@ const Navbar = () => {
               >
                 Notices
               </Link>
-              <button
-                onClick={() => router.push("/login")}
-                className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-full transition-colors flex items-center gap-2"
-              >
-                <UserIcon className="h-5 w-5" />
-                <span>Login</span>
-              </button>
+
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-full transition-colors flex items-center gap-2"
+                  >
+                    <UserIcon className="h-5 w-5" />
+                    <span>
+                      {ADMIN_EMAILS.includes(user.email || "")
+                        ? "Admin"
+                        : user.displayName || "Dashboard"}
+                    </span>
+                  </button>
+
+                  <AnimatePresence>
+                    {isDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute right-0 mt-2 w-48 py-2 bg-black/90 backdrop-blur-sm rounded-xl border border-white/10 shadow-xl"
+                      >
+                        <button
+                          onClick={handleDashboardClick}
+                          className="w-full text-left px-4 py-2 text-white hover:bg-white/10 transition-colors"
+                        >
+                          {ADMIN_EMAILS.includes(user.email || "")
+                            ? "Admin Dashboard"
+                            : "Dashboard"}
+                        </button>
+                        <Link
+                          href="/profile"
+                          className="block px-4 py-2 text-white hover:bg-white/10 transition-colors"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          Profile
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/10 transition-colors"
+                        >
+                          Sign Out
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <button
+                  onClick={() => router.push("/login")}
+                  className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-full transition-colors flex items-center gap-2"
+                >
+                  <UserIcon className="h-5 w-5" />
+                  <span>Login</span>
+                </button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -90,7 +164,7 @@ const Navbar = () => {
           <div
             className={`md:hidden transition-all duration-300 ease-in-out ${
               isMobileMenuOpen
-                ? "max-h-48 opacity-100 pb-4"
+                ? "max-h-64 opacity-100 pb-4"
                 : "max-h-0 opacity-0 overflow-hidden"
             }`}
           >
@@ -109,16 +183,41 @@ const Navbar = () => {
               >
                 Notices
               </Link>
-              <button
-                onClick={() => {
-                  router.push("/login");
-                  setIsMobileMenuOpen(false);
-                }}
-                className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-full transition-colors flex items-center gap-2 justify-center"
-              >
-                <UserIcon className="h-5 w-5" />
-                <span>Login</span>
-              </button>
+              {user ? (
+                <>
+                  <button
+                    onClick={() => {
+                      handleDashboardClick();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-white hover:text-primary transition-colors py-2 text-left"
+                  >
+                    {ADMIN_EMAILS.includes(user.email || "")
+                      ? "Admin Dashboard"
+                      : "Dashboard"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-red-400 hover:text-red-300 transition-colors py-2 text-left"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    router.push("/login");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-full transition-colors flex items-center gap-2 justify-center"
+                >
+                  <UserIcon className="h-5 w-5" />
+                  <span>Login</span>
+                </button>
+              )}
             </div>
           </div>
         </div>

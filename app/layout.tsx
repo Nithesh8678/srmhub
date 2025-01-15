@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "./components/Navbar";
 import { Meteors } from "./components/Meteor";
 import "./globals.css";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,11 +30,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black min-h-screen relative`}
       >
-        <Meteors />
-        <div className="relative z-10">
-          <Navbar />
-          {children}
-        </div>
+        <AuthContextProvider>
+          <Meteors />
+          <div className="relative z-10">
+            <Navbar />
+            {children}
+          </div>
+        </AuthContextProvider>
       </body>
     </html>
   );
