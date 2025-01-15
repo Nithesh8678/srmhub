@@ -1,5 +1,5 @@
 import HeroCarousel from "./components/HeroCarousel";
-import { FeaturedEvents } from "./components/FeaturedEvents";
+import FeaturedEvents from "./components/FeaturedEvents";
 
 export default function Home() {
   return (
