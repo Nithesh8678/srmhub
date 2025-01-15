@@ -210,7 +210,7 @@ export default function AddEventModal({
                     onChange={(e) =>
                       setFormData({ ...formData, category: e.target.value })
                     }
-                    className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-primary transition-colors"
+                    className="w-full bg-black border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-primary transition-colors"
                   >
                     <option value="Technical">Technical</option>
                     <option value="Cultural">Cultural</option>
@@ -227,7 +227,7 @@ export default function AddEventModal({
                     onChange={(e) =>
                       setFormData({ ...formData, club: e.target.value })
                     }
-                    className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-primary transition-colors"
+                    className="w-full bg-black border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-primary transition-colors"
                   >
                     {CLUB_OPTIONS.map((club) => (
                       <option key={club} value={club}>
@@ -248,11 +248,32 @@ export default function AddEventModal({
                       registrationOpen: e.target.value === "true",
                     })
                   }
-                  className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-black border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-primary transition-colors"
                 >
                   <option value="true">Open</option>
                   <option value="false">Closed</option>
                 </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-white/70 text-sm">
+                  Registration Link
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://forms.google.com/..."
+                  value={formData.registrationLink || ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      registrationLink: e.target.value,
+                    })
+                  }
+                  className="w-full bg-black border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-primary transition-colors"
+                />
+                <p className="text-xs text-white/50">
+                  Add Google Form or any other registration link
+                </p>
               </div>
 
               <div className="space-y-2">

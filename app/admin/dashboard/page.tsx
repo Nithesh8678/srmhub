@@ -112,7 +112,7 @@ export default function AdminDashboardPage() {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full sm:w-auto bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-primary transition-colors"
+                    className="w-full sm:w-auto bg-black border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-primary transition-colors"
                   >
                     <option value="all">All Categories</option>
                     <option value="Technical">Technical</option>
@@ -123,7 +123,7 @@ export default function AdminDashboardPage() {
                   <select
                     value={selectedClub}
                     onChange={(e) => setSelectedClub(e.target.value)}
-                    className="w-full sm:w-auto bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-primary transition-colors"
+                    className="w-full sm:w-auto bg-black border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-primary transition-colors"
                   >
                     <option value="all">All Clubs</option>
                     {CLUB_OPTIONS.map((club) => (

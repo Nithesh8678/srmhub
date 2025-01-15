@@ -53,15 +53,19 @@ export default function EventDetailPage({
       return;
     }
 
-    setIsRegistering(true);
-    try {
-      await registerForEvent(params.id, user.uid);
-      // Show success message or redirect
-    } catch (error: any) {
-      console.error("Registration error:", error);
-      // Show error message
-    } finally {
-      setIsRegistering(false);
+    if (event.registrationLink) {
+      window.open(event.registrationLink, "_blank");
+    } else {
+      setIsRegistering(true);
+      try {
+        await registerForEvent(params.id, user.uid);
+        // Show success message or redirect
+      } catch (error: any) {
+        console.error("Registration error:", error);
+        // Show error message
+      } finally {
+        setIsRegistering(false);
+      }
     }
   };
 
@@ -175,7 +179,11 @@ export default function EventDetailPage({
                   disabled={isRegistering}
                   className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-70"
                 >
-                  {isRegistering ? "Registering..." : "Register Now"}
+                  {isRegistering
+                    ? "Registering..."
+                    : event.registrationLink
+                    ? "Register on Form"
+                    : "Register Now"}
                 </button>
               )}
             </div>

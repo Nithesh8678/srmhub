@@ -9,13 +9,18 @@ import {
 } from "@heroicons/react/24/outline";
 import { db } from "@/app/firebase/config";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import { Event } from "@/app/types/event";
+import { Event, CLUB_OPTIONS } from "@/app/types/event";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const clubParam = searchParams.get("club");
+  const [selectedClub, setSelectedClub] = useState(clubParam || "all");
 
   useEffect(() => {
     const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
@@ -40,10 +45,22 @@ export default function EventsPage() {
     return () => unsubscribe();
   }, []);
 
-  const filteredEvents =
-    selectedCategory === "all"
-      ? events
-      : events.filter((event) => event.category === selectedCategory);
+  const handleClubChange = (club: string) => {
+    setSelectedClub(club);
+    if (club === "all") {
+      router.push("/events");
+    } else {
+      router.push(`/events?club=${club}`);
+    }
+  };
+
+  const filteredEvents = events
+    .filter((event) =>
+      selectedCategory === "all" ? true : event.category === selectedCategory
+    )
+    .filter((event) =>
+      selectedClub === "all" ? true : event.club === selectedClub
+    );
 
   return (
     <main className="min-h-screen pt-24 pb-12">
@@ -55,16 +72,31 @@ export default function EventsPage() {
               Discover and register for upcoming events
             </p>
           </div>
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-primary transition-colors"
-          >
-            <option value="all">All Categories</option>
-            <option value="Technical">Technical</option>
-            <option value="Cultural">Cultural</option>
-            <option value="Sports">Sports</option>
-          </select>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="bg-black border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-primary transition-colors"
+            >
+              <option value="all">All Categories</option>
+              <option value="Technical">Technical</option>
+              <option value="Cultural">Cultural</option>
+              <option value="Sports">Sports</option>
+            </select>
+
+            <select
+              value={selectedClub}
+              onChange={(e) => handleClubChange(e.target.value)}
+              className="bg-black border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-primary transition-colors"
+            >
+              <option value="all">All Clubs</option>
+              {CLUB_OPTIONS.map((club) => (
+                <option key={club} value={club}>
+                  {club}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {isLoading ? (

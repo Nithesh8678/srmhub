@@ -9,6 +9,7 @@ export interface Event {
   club: string;
   imageUrl?: string;
   registrationOpen: boolean;
+  registrationLink?: string;
   createdAt: string;
   updatedAt: string;
 }
