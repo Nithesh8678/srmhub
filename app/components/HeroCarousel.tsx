@@ -109,13 +109,13 @@ const HeroCarousel = () => {
               dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
               as="div"
             >
-              <Image
+              {/* <Image
                 src={slides[currentIndex].image}
                 alt={slides[currentIndex].title}
                 fill
                 className="object-cover"
                 priority
-              />
+              /> */}
               <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
                 <motion.h1

@@ -47,7 +47,7 @@ const Navbar = () => {
   return (
     <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 w-11/12 max-w-5xl z-50">
       <div
-        className={`rounded-full ${
+        className={`rounded-full border border-gray-800 ${
           isScrolled ? "bg-black/80" : "bg-black/50"
         } backdrop-blur-md shadow-lg transition-all duration-300`}
       >
@@ -56,7 +56,7 @@ const Navbar = () => {
             {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
-                <span className="text-white text-xl font-bold">LOGO</span>
+                <span className="text-white text-xl font-bold">SRMHub</span>
               </Link>
             </div>
 
