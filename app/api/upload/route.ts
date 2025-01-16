@@ -17,19 +17,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Convert file to base64
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const fileStr = `data:${file.type};base64,${buffer.toString("base64")}`;
+    const base64Image = buffer.toString("base64");
+    const fileStr = `data:${file.type};base64,${base64Image}`;
 
-    // Upload to Cloudinary with additional options
     const result = await cloudinary.uploader.upload(fileStr, {
-      folder: "events", // Store in events folder
-      resource_type: "auto", // Automatically detect file type
+      folder: "profiles",
       transformation: {
-        // Optional: Add image transformations
-        quality: "auto",
-        fetch_format: "auto",
+        width: 400,
+        height: 400,
+        crop: "fill",
+        gravity: "face",
       },
     });
 

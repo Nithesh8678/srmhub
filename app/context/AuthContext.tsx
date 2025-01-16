@@ -10,6 +10,10 @@ import {
   signInWithPopup,
   User,
   UserCredential,
+  updateProfile,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useRouter } from "next/navigation";
@@ -21,6 +25,14 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<UserCredential>;
   signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  updateUserProfile: (updates: {
+    displayName?: string;
+    photoURL?: string;
+  }) => Promise<void>;
+  updateUserPassword: (
+    currentPassword: string,
+    newPassword: string
+  ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -101,9 +113,58 @@ export const AuthContextProvider = ({
     }
   };
 
+  const updateUserProfile = async (updates: {
+    displayName?: string;
+    photoURL?: string;
+  }) => {
+    if (!user) throw new Error("No user logged in");
+    try {
+      await updateProfile(auth.currentUser!, updates);
+      // Force refresh the user object
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        setUser({ ...currentUser });
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      throw error;
+    }
+  };
+
+  const updateUserPassword = async (
+    currentPassword: string,
+    newPassword: string
+  ) => {
+    if (!user || !user.email) throw new Error("No user logged in");
+
+    try {
+      // First re-authenticate the user
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        currentPassword
+      );
+      await reauthenticateWithCredential(user, credential);
+
+      // Then update password
+      await updatePassword(user, newPassword);
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, loading, signUp, signIn, signInWithGoogle, logout }}
+      value={{
+        user,
+        loading,
+        signUp,
+        signIn,
+        signInWithGoogle,
+        logout,
+        updateUserProfile,
+        updateUserPassword,
+      }}
     >
       {!loading && children}
     </AuthContext.Provider>

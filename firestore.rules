@@ -6,15 +6,20 @@ service cloud.firestore {
       allow read: if true;
       // Only allow authenticated admin users to write
       allow write: if request.auth != null && 
-        (request.auth.token.email == 'admin@srm.edu.in' || 
-         request.auth.token.email == 'nitheshnithesh56@gmail.com');
+        request.auth.token.email in ['admin@srm.edu.in', 'nitheshnithesh56@gmail.com'];
     }
     
-    // For event registrations
+    // Allow users to manage their own registrations
     match /registrations/{registrationId} {
       allow read: if request.auth != null;
       allow create: if request.auth != null && 
         request.resource.data.userId == request.auth.uid;
+    }
+
+    // Add rules for user profiles
+    match /userProfiles/{userId} {
+      // Users can only read and write their own profile
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 } 

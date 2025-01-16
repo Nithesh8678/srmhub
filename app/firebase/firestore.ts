@@ -11,6 +11,7 @@ import {
   orderBy,
   serverTimestamp,
   QueryConstraint,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "./config";
 import { Event, EventFormData } from "../types/event";
@@ -137,6 +138,52 @@ export const getUserRegistrations = async (userId: string) => {
     }));
   } catch (error) {
     console.error("Error getting user registrations:", error);
+    throw error;
+  }
+};
+
+interface UserProfile {
+  displayName: string;
+  email: string;
+  bio: string;
+  phone: string;
+  updatedAt: string;
+  notificationPreferences: {
+    eventUpdates: boolean;
+    newNotices: boolean;
+    registrationConfirmations: boolean;
+  };
+}
+
+export const updateUserProfile = async (
+  userId: string,
+  data: Partial<UserProfile>
+) => {
+  try {
+    const userRef = doc(db, "userProfiles", userId);
+    await setDoc(
+      userRef,
+      {
+        ...data,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    throw error;
+  }
+};
+
+export const getUserProfile = async (
+  userId: string
+): Promise<UserProfile | null> => {
+  try {
+    const userRef = doc(db, "userProfiles", userId);
+    const docSnap = await getDoc(userRef);
+    return docSnap.exists() ? (docSnap.data() as UserProfile) : null;
+  } catch (error) {
+    console.error("Error getting user profile:", error);
     throw error;
   }
 };
