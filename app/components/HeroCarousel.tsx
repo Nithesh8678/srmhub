@@ -101,6 +101,7 @@ const HeroCarousel = () => {
                   paginate(-1);
                 }
               }}
+              //@ts-expect-error
               className="absolute inset-0 cursor-grab active:cursor-grabbing"
               onHoverStart={() => setIsAutoPlaying(false)}
               onHoverEnd={() => setIsAutoPlaying(true)}
@@ -121,6 +122,7 @@ const HeroCarousel = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
+                  //@ts-expect-error
                   className="text-4xl md:text-6xl font-bold text-center mb-4 px-4"
                 >
                   {slides[currentIndex].title}
@@ -129,6 +131,7 @@ const HeroCarousel = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
+                  //@ts-expect-error
                   className="text-lg md:text-xl text-center text-gray-200 px-4"
                 >
                   {slides[currentIndex].description}

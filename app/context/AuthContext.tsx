@@ -9,6 +9,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   User,
+  UserCredential,
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useRouter } from "next/navigation";
@@ -16,11 +17,10 @@ import { useRouter } from "next/navigation";
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<UserCredential>;
+  signIn: (email: string, password: string) => Promise<UserCredential>;
   signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
-  updateProfile?: (displayName: string, photoURL: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -50,8 +50,15 @@ export const AuthContextProvider = ({
 
   const signUp = async (email: string, password: string) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("Sign up successful:", result.user.email);
+      return result;
     } catch (error) {
+      console.error("Sign up error:", error);
       throw error;
     }
   };

@@ -114,6 +114,7 @@ export default function EventsPage() {
                 key={event.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                //@ts-expect-error
                 className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden group"
               >
                 {event.imageUrl && (

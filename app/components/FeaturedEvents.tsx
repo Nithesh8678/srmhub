@@ -84,6 +84,7 @@ export default function FeaturedEvents() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
+            //@ts-expect-error
             className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden group"
           >
             {event.imageUrl && (

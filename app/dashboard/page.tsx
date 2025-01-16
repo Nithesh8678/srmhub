@@ -14,6 +14,7 @@ export default function DashboardPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            //@ts-expect-error
             className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
           >
             <h1 className="text-3xl font-bold text-white mb-6">

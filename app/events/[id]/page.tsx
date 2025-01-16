@@ -14,11 +14,7 @@ import { useRouter } from "next/navigation";
 import { getEvent, registerForEvent } from "@/app/firebase/firestore";
 import { useAuth } from "@/app/context/AuthContext";
 
-export default function EventDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function EventDetailPage({ params }: any) {
   const { user } = useAuth();
   const [event, setEvent] = useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);

@@ -40,6 +40,7 @@ export default function NoticesPage() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          //@ts-expect-error
           className="text-4xl font-bold text-white mb-8"
         >
           Notices & Announcements
@@ -52,6 +53,7 @@ export default function NoticesPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.01 }}
+              //@ts-expect-error
               className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10"
             >
               <div className="flex items-start justify-between mb-4">

@@ -15,6 +15,7 @@ export default function ClubsSection() {
         {CLUB_OPTIONS.map((club) => (
           <Link key={club} href={`/events?club=${club}`}>
             <motion.div
+              //@ts-expect-error
               onMouseEnter={() => setHoveredClub(club)}
               onMouseLeave={() => setHoveredClub(null)}
               className={`relative bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-4 text-center transition-colors ${

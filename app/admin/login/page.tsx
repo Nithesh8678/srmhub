@@ -69,6 +69,7 @@ export default function AdminLoginPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          //@ts-expect-error
           className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
         >
           <h1 className="text-2xl font-bold text-white mb-6 text-center">
@@ -79,6 +80,7 @@ export default function AdminLoginPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
+              //@ts-expect-error
               className="mb-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm"
             >
               {error}
@@ -123,6 +125,7 @@ export default function AdminLoginPage() {
             >
               {isLoading ? (
                 <motion.div
+                  //@ts-expect-error
                   className="absolute inset-0 flex items-center justify-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

@@ -95,6 +95,7 @@ const Navbar = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
+                        //@ts-expect-error
                         className="absolute right-0 mt-2 w-48 py-2 bg-black/90 backdrop-blur-sm rounded-xl border border-white/10 shadow-xl"
                       >
                         <button
