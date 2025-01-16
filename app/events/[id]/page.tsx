@@ -93,8 +93,8 @@ export default function EventDetailPage({ params }: PageProps) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          //@ts-expect-error
           className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden"
-          as="div"
         >
           {event.imageUrl && (
             <div className="relative">
