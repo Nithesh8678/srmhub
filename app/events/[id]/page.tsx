@@ -53,16 +53,16 @@ export default function EventDetailPage({ params }: PageProps) {
       return;
     }
 
+    if (!event) return;
+
     if (event.registrationLink) {
       window.open(event.registrationLink, "_blank");
     } else {
       setIsRegistering(true);
       try {
         await registerForEvent(params.id, user.uid);
-        // Show success message or redirect
       } catch (error: any) {
         console.error("Registration error:", error);
-        // Show error message
       } finally {
         setIsRegistering(false);
       }
@@ -94,6 +94,7 @@ export default function EventDetailPage({ params }: PageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden"
+          as="div"
         >
           {event.imageUrl && (
             <div className="relative">
