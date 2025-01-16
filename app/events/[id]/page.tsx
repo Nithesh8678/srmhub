@@ -8,19 +8,19 @@ import {
   MapPinIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import { db } from "@/app/firebase/config";
-import { doc, getDoc } from "firebase/firestore";
 import { Event } from "@/app/types/event";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getEvent, registerForEvent } from "@/app/firebase/firestore";
 import { useAuth } from "@/app/context/AuthContext";
 
-export default function EventDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function EventDetailPage({ params }: PageProps) {
   const { user } = useAuth();
   const [event, setEvent] = useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
