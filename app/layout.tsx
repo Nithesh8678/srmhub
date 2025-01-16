@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import { AuthContextProvider } from "./context/AuthContext";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
+import { Meteors } from "./components/Meteor";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${inter.className} bg-black min-h-screen flex flex-col`}
       >
         <AuthContextProvider>
+          <Meteors />
           <Navbar />
           {children}
           <Footer />
