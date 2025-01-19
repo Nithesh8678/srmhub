@@ -26,6 +26,14 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [isMobileMenuOpen]);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -49,7 +57,9 @@ const Navbar = () => {
       <div
         className={`rounded-full border border-gray-800 ${
           isScrolled ? "bg-black/80" : "bg-black/50"
-        } backdrop-blur-md shadow-lg transition-all duration-300`}
+        } backdrop-blur-md shadow-lg transition-all duration-300 ${
+          isMobileMenuOpen ? "rounded-lg" : "rounded-full"
+        } ${isMobileMenuOpen ? "pb-4" : "pb-0"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
@@ -183,6 +193,13 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Notices
+              </Link>
+              <Link
+                href="/profile"
+                className="text-white hover:text-primary transition-colors py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Profile
               </Link>
               {user ? (
                 <>
